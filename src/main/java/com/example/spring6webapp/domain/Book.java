@@ -3,6 +3,7 @@ package com.example.spring6webapp.domain;
 import jakarta.persistence.*;
 
 import javax.naming.Name;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -10,20 +11,21 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private String title;
     private String isbn;
 
     @ManyToMany
-    @JoinTable(name="author_book",joinColumns = @JoinColumn(name = "author_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private Set<Author> author;
+    @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private Set<Author> authors = new HashSet<>();
 
     public Set<Author> getAuthor() {
-        return author;
+        return authors;
     }
 
     public void setAuthor(Set<Author> author) {
-        this.author = author;
+        this.authors = author;
     }
 
     public long getId() {
@@ -57,7 +59,7 @@ public class Book {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", isbn='" + isbn + '\'' +
-                ", author=" + author +
+                ", author=" + authors +
                 '}';
     }
 
